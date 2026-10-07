@@ -1,0 +1,54 @@
+[project]
+name = "implementation-worker-mcp"
+version = "0.1.0"
+description = "stdio MCP server that runs persistent DeepSeek Harness implementation workers asynchronously"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "mcp>=2,<3",
+]
+
+[project.scripts]
+implementation-worker-mcp = "worker_mcp.server:main"
+implementation-worker-runner = "worker_mcp.turn_runner:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-timeout>=2",
+    "ruff>=0.16.10",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/worker_mcp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+timeout = 300
+markers = [
+    "real_harness: requires a working DeepSeek Harness installation and credentials",
+    "real_binary: drives the real dsh binary; needs no model credentials",
+]
+
+[tool.ruff]
+# tests/conftest.py bootstraps sys.path before importing the package
+src = ["src", "tests"]
+
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# pytest's conftest deliberately puts src/ on sys.path before importing the
+# package under test; the test modules intentionally import `conftest` helpers
+# alongside third-party imports.
+"tests/conftest.py" = ["E402"]

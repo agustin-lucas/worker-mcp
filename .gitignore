@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# uv / caches used when the sandbox requires an in-tree cache
+.uv-cache/
+.npm-cache/
+
+# Test and lint caches
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local Harness installation used by the real-binary integration test
+.dsh-cli/
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+
+# Local environment overrides (uv may create an empty one)
+.env
+.env.*
+
+agent_docs/
